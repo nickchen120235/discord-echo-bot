@@ -1,0 +1,15 @@
+name: Build and publish to ghcr.io
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: macbre/push-to-ghcr@master
+        with:
+          image_name: ${{ github.repository }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          image_tag: ${{ github.ref_name }}
