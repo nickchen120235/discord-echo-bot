@@ -6,6 +6,9 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
       - uses: macbre/push-to-ghcr@v14
