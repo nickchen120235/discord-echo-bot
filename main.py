@@ -18,7 +18,7 @@ bot = EchoBot(intents=discord.Intents(messages=True))
 @bot.event
 async def on_message(message: discord.Message):
   if message.author == bot.user: return
-  if len(message.content) < 0: return
+  if len(message.content) <= 0: return
   text = message.content.split(' ', 1)[1]
   await message.delete()
   if message.reference and message.reference.resolved and isinstance(message.reference.resolved, discord.Message):
