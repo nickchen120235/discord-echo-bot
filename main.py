@@ -19,8 +19,13 @@ bot = EchoBot(intents=discord.Intents(messages=True))
 async def on_message(message: discord.Message):
   if message.author == bot.user: return
   if len(message.content) <= 0: return
-  text = message.content.split(' ', 1)[1]
+  if len(message.mentions) <= 0: return
+  if message.mentions[0].id != bot.user.id: return
   await message.delete()
+  content = message.content.split(' ', 1)
+  if len(content) == 1:
+    return await message.channel.send('找我嗎？')
+  text = message.content.split(' ', 1)[1]
   if message.reference and message.reference.resolved and isinstance(message.reference.resolved, discord.Message):
     await message.reference.resolved.reply(text, mention_author=False)
   else:
