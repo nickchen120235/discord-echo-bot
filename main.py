@@ -1,7 +1,17 @@
+import asyncio
 import discord
 import os
+import requests
 import logging, coloredlogs
 from dotenv import load_dotenv
+
+def log_message(channel: str, user: str, content: str):
+  endpoint = os.environ.get('LOG_ENDPOINT') or 'http://localhost:8000'
+  secret = os.environ.get('LOG_SECRET') or 'DEFAULT_SECRET'
+  data = {'channel': channel, 'user': user, 'content': content}
+  headers = {'X-Preshared-Key': secret}
+  r = requests.post(endpoint, json=data, headers=headers)
+  r.raise_for_status()
 
 load_dotenv()
 class EchoBot(discord.Bot):
@@ -41,6 +51,11 @@ async def on_message(message: discord.Message):
     await message.reference.resolved.reply(text, mention_author=False)
   else:
     await message.channel.send(text)
+  channel_name = ''
+  channel = await bot.fetch_channel(message.channel.id)
+  if channel is None: channel_name = str(message.channel.id)
+  else: channel_name = channel.name
+  bot.loop.create_task(asyncio.to_thread(log_message, channel_name, message.author.display_name, text))
 
 @bot.slash_command(name='image', description='上傳圖片')
 @discord.option("attachment", description="要上傳的檔案", required=True)

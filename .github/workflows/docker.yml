@@ -1,7 +1,7 @@
 name: Build and publish to ghcr.io
 on:
   push:
-    branches: [master]
+    branches: [master, hasu-dc]
 
 jobs:
   build-and-publish:
