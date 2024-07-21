@@ -53,7 +53,7 @@ async def on_message(message: discord.Message):
     await message.channel.send(text)
   
   # logging part
-  if message.guild.id != int(os.environ.get('LOG_GUILD_ID')): return
+  if message.author.guild.id != int(os.environ.get('LOG_GUILD_ID')): return
   channel_name = ''
   channel = await bot.fetch_channel(message.channel.id)
   if channel is None: channel_name = str(message.channel.id)
