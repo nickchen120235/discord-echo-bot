@@ -29,7 +29,7 @@ async def on_message(message: discord.Message):
   if len(message.content) <= 0: return
   if len(message.mentions) <= 0: return
   content = message.content.split(' ', 1)
-  if len(content) == 1:
+  if len(content) == 1 and content[0].startswith('<@'):
     return await message.channel.send('找我嗎？')
   # check if the first mention is actually the bot (this is for replying with mention)
   actual_id = extract_id(content[0])
