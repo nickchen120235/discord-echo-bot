@@ -48,6 +48,7 @@ async def on_message(message: discord.Message):
 async def upload_image(ctx: discord.ApplicationContext, attachment: discord.Attachment, spoiler: bool):
   await ctx.defer()
   file = await attachment.to_file(spoiler=spoiler)
-  await ctx.respond(file=file)
+  await ctx.respond('OK', ephemeral=True, delete_after=1)
+  await (await bot.fetch_channel(ctx.channel_id)).send(file=file)
 
 bot.run(os.environ.get('BOT_TOKEN'))
