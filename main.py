@@ -68,5 +68,9 @@ async def upload_image(ctx: discord.ApplicationContext, attachment: discord.Atta
   file = await attachment.to_file(spoiler=spoiler)
   await ctx.respond('OK', ephemeral=True, delete_after=1)
   await (await bot.fetch_channel(ctx.channel_id)).send(file=file)
+  channel = await bot.fetch_channel(ctx.channel_id)
+  if channel is None: channel_name = str(ctx.channel_id)
+  else: channel_name = channel.name
+  bot.loop.create_task(asyncio.to_thread(log_message, channel_name, ctx.author.display_name, "(上傳圖片)"))
 
 bot.run(os.environ.get('BOT_TOKEN'))
