@@ -42,4 +42,12 @@ async def on_message(message: discord.Message):
   else:
     await message.channel.send(text)
 
+@bot.slash_command(name='image', description='上傳圖片')
+@discord.option("attachment", description="要上傳的檔案", required=True)
+@discord.option("spoiler", description="隱藏內容", required=True, default=False)
+async def upload_image(ctx: discord.ApplicationContext, attachment: discord.Attachment, spoiler: bool):
+  await ctx.defer()
+  file = await attachment.to_file(spoiler=spoiler)
+  await ctx.respond(file=file)
+
 bot.run(os.environ.get('BOT_TOKEN'))
